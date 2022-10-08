@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StockRequestsResources.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.resources</a> &gt; <span class="el_source">StockRequestsResources.java</span></div><h1>StockRequestsResources.java</h1><pre class="source lang-java linenums">package system.barManagement.service.resources;
+
+import system.barManagement.service.JWTTokenNeeded;
+import system.barManagement.service.model.Employee;
+import system.barManagement.service.model.Item;
+import system.barManagement.service.model.StockRequest;
+import system.barManagement.service.repository.*;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.util.List;
+
+@JWTTokenNeeded
+//@RolesAllowed({&quot;WAREHOUSE_KEEPER&quot;})
+@Path(&quot;/requests&quot;)
+<span class="nc" id="L18">public class StockRequestsResources {</span>
+
+    @Context
+    private UriInfo uriInfo;
+
+//    @GET //GET at http://localhost:XXXX/requests/
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getAllRequests() {
+//        List&lt;StockRequest&gt; requests = fakeDataStore.getStockRequests();
+//        return Response.ok(requests).build();
+//    }
+//
+//    @GET //GET at http://localhost:XXXX/request/2
+//    @Path(&quot;{id}&quot;)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getRequestPath(@PathParam(&quot;id&quot;) int id) {
+//        StockRequest stockRequest = fakeDataStore.getStockRequest(id);
+//        if (stockRequest == null) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Please provide a valid stock request id.&quot;).build();
+//        } else {
+//            return Response.ok(stockRequest).build();
+//        }
+//    }
+//
+//    //Display approved requests
+//    @GET //GET at http://localhost:XXXX/requests/
+//    @Path(&quot;/approved&quot;)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getAllApprovedRequests() {
+//        List&lt;StockRequest&gt; requests = fakeDataStore.getApprovedStockRequests();
+//        if(requests.size() == 0) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity(&quot;There are no approved requests&quot;).build();
+//        }
+//        else{
+//            return Response.ok(requests).build();
+//        }
+//    }
+//
+//    //Create stock request
+//    @POST //POST at http://localhost:XXXX/requests/
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Response createStockRequest(StockRequest stockRequest) {
+//        if (!fakeDataStore.addStockRequest(stockRequest)){
+//            String entity =  &quot;Stock request with id &quot; + stockRequest.getStockRequestId() + &quot; already exists.&quot;;
+//            return Response.status(Response.Status.CONFLICT).entity(entity).build();
+//        } else {
+//            String url = uriInfo.getAbsolutePath() + &quot;/&quot; + stockRequest.getStockRequestId(); // url of the created student
+//            URI uri = URI.create(url);
+//            return Response.created(uri).build();
+//        }
+//    }
+//
+//    @DELETE //DELETE at http://localhost:XXXX/requests/3
+//    @Path(&quot;{id}&quot;)
+//    public Response deleteStockRequest(@PathParam(&quot;id&quot;) int id) {
+//        fakeDataStore.deleteEmployee(id);
+//        // Idempotent method. Always return the same response (even if the resource has already been deleted before).
+//        return Response.noContent().build();
+//    }
+//
+////    @PUT //PUT at http://localhost:XXXX/request/{id}
+////    @Consumes(MediaType.APPLICATION_JSON)
+////    @Path(&quot;{id}&quot;)
+////    public Response approveRequest(@PathParam(&quot;id&quot;) int requestId) {
+////        // Idempotent method. Always update (even if the resource has already been updated before).
+////        if (fakeDataStore.approveRequest(requestId)) {
+////            return Response.noContent().build();
+////        } else {
+////            return Response.status(Response.Status.NOT_FOUND).entity(&quot;Please provide a valid stock request id.&quot;).build();
+////        }
+////    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

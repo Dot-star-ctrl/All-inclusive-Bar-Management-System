@@ -1,0 +1,124 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'application'
+    id "org.sonarqube" version "3.0"
+    id 'jacoco'
+    id 'com.coditory.manifest' version '0.1.9'
+}
+
+repositories {
+    mavenCentral()
+}
+
+application{
+    mainClassName 'system.barManagement.service.Publisher'
+}
+
+dependencies {
+    /*  Jersey for the service
+       We use the latest 2.x release because 2.x releases implement JAX-RS 2.1 API.
+       We do NOT use a Jersey 3.x release because 3.x releases implement Jakarta RESTful WebServices 3.0 API.*/
+    implementation group: 'org.glassfish.jersey.bundles', name: 'jaxrs-ri', version: '2.+'
+    implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.+'
+
+// https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
+
+// https://mvnrepository.com/artifact/org.glassfish.jersey.test-framework.providers/jersey-test-framework-provider-grizzly2
+    testCompile group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-grizzly2', version: '2.33'
+
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.+'
+    // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+
+
+    // Grizzly will host the service
+    implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-grizzly2-http', version: '2.+'
+
+    //JJWT library
+    compile 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.11.2',
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+            'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
+
+
+
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java',
+            version: '3.141.59'
+
+    // Logging
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.+'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.+'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+
+    // https://mvnrepository.com/artifact/junit/junit
+    testCompileOnly group: 'junit', name: 'junit', version: '4.13.1'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.3.0'
+
+    //hibernate
+    implementation group: 'net.sf.ucanaccess', name: 'ucanaccess', version:'+'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.14.Final'// leave this version. It does not work with higher versions!
+    implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
+    implementation 'com.zsoltfabok:sqlite-dialect:1.0'
+    implementation "mysql:mysql-connector-java:6.0.6"
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled true
+    }
+    afterEvaluate {
+        excludedClassFilesForReport(classDirectories)
+    }
+}
+
+jacocoTestCoverageVerification {
+
+    afterEvaluate {
+        excludedClassFilesForReport(classDirectories)
+    }
+}
+
+private excludedClassFilesForReport(classDirectories) {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it,
+                exclude: [
+                        'system/barManagement/service/Publisher.class',
+                        'system/barManagement/service/CorsFilter.class',
+                        'system/barManagement/service/BarManagementDBException.class',
+                        'system/barManagement/service/CustomApplicationConfig.class',
+                        'system/barManagement/service/JWTTokenNeeded.class',
+                ]
+        )
+    }))
+}
+
+
+compileJava {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
+compileTestJava {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+    options.compilerArgs += '-parameters'
+}
+
+test {
+    // enable TestNG support (default is JUnit)
+    useTestNG()
+    // enable JUnit Platform (a.k.a. JUnit 5) support
+    useJUnitPlatform()
+    // create a report every time we test our application.
+    finalizedBy jacocoTestReport
+}

@@ -1,0 +1,39 @@
+Manifest-Version: 1.0
+Main-Class: system.barManagement.service.Publisher
+Implementation-Title: barManagementSystem
+Implementation-Version: unspecified
+Built-By: 35989
+Built-Host: DESKTOP-8QUU4FI
+Built-Date: 2021-01-12T10:18:39Z
+Built-OS: Windows 10 10.0 amd64
+Built-JDK: 11.0.8 Oracle Corporation
+SCM-Repository: https://git.fhict.nl/I425926/s3-cb04_individual_track_ge
+ orgi_minchev.git
+SCM-Branch: refs/heads/feature/unit-tests
+SCM-Commit-Message: utility tests, login bug fixed
+SCM-Commit-Hash: b86fdb898d053e60f9b79efe2a6898ff85810ef1
+SCM-Commit-Author: i425926 <g.minchev@student.fontys.nl>
+SCM-Commit-Date: 2021-01-04T08:44:53Z
+Class-Path: dependencies/jersey-server-2.17.jar dependencies/jjwt-api-0.
+ 11.2.jar dependencies/selenium-java-3.141.59.jar dependencies/jersey-cl
+ ient-2.17.jar dependencies/jersey-media-jaxb-2.17.jar dependencies/jers
+ ey-common-2.17.jar dependencies/javax.ws.rs-api-2.0.1.jar dependencies/
+ javax.annotation-api-1.2.jar dependencies/hk2-locator-2.4.0-b10.jar dep
+ endencies/hk2-api-2.4.0-b10.jar dependencies/javax.inject-2.4.0-b10.jar
+  dependencies/validation-api-1.1.0.Final.jar dependencies/selenium-chro
+ me-driver-3.141.59.jar dependencies/selenium-edge-driver-3.141.59.jar d
+ ependencies/selenium-firefox-driver-3.141.59.jar dependencies/selenium-
+ ie-driver-3.141.59.jar dependencies/selenium-opera-driver-3.141.59.jar 
+ dependencies/selenium-safari-driver-3.141.59.jar dependencies/selenium-
+ support-3.141.59.jar dependencies/selenium-remote-driver-3.141.59.jar d
+ ependencies/selenium-api-3.141.59.jar dependencies/byte-buddy-1.8.15.ja
+ r dependencies/commons-exec-1.3.jar dependencies/guava-25.0-jre.jar dep
+ endencies/okhttp-3.11.0.jar dependencies/okio-1.14.0.jar dependencies/j
+ ersey-guava-2.17.jar dependencies/osgi-resource-locator-1.0.1.jar depen
+ dencies/hk2-utils-2.4.0-b10.jar dependencies/aopalliance-repackaged-2.4
+ .0-b10.jar dependencies/javassist-3.18.1-GA.jar dependencies/jsr305-1.3
+ .9.jar dependencies/checker-compat-qual-2.0.0.jar dependencies/error_pr
+ one_annotations-2.1.3.jar dependencies/j2objc-annotations-1.1.jar depen
+ dencies/animal-sniffer-annotations-1.14.jar dependencies/javax.inject-1
+ .jar
+

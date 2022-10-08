@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HibernateItemsRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.repository</a> &gt; <span class="el_source">HibernateItemsRepository.java</span></div><h1>HibernateItemsRepository.java</h1><pre class="source lang-java linenums">package system.barManagement.service.repository;
+
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import system.barManagement.service.BarManagementDBException;
+import system.barManagement.service.model.Item;
+
+import java.util.List;
+
+<span class="fc" id="L10">public class HibernateItemsRepository {</span>
+
+    public List&lt;Item&gt; getItems() throws BarManagementDBException {
+
+        try {
+<span class="fc" id="L15">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L16">            session.beginTransaction();</span>
+<span class="fc" id="L17">            List&lt;Item&gt; result = session.createQuery(&quot;from Item &quot;, Item.class).list();</span>
+
+<span class="fc bfc" id="L19" title="All 2 branches covered.">            for (Item item : result) {</span>
+<span class="fc" id="L20">                Hibernate.initialize(item.getItemName());</span>
+<span class="fc" id="L21">            }</span>
+<span class="fc" id="L22">            session.getTransaction().commit();</span>
+<span class="fc" id="L23">            MyUtil.closeSession();</span>
+<span class="fc" id="L24">            return result;</span>
+<span class="nc" id="L25">        } catch (Exception e) {</span>
+<span class="nc" id="L26">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L27">            throw new BarManagementDBException(&quot;Cannot read items from the database&quot;, e);</span>
+        }
+    }
+
+    public Item getItem(int itemId) throws BarManagementDBException {
+        try {
+<span class="fc" id="L33">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L34">            session.beginTransaction();</span>
+<span class="fc" id="L35">            Item item = session.get(Item.class, itemId);</span>
+<span class="fc" id="L36">            session.getTransaction().commit();</span>
+<span class="fc" id="L37">            MyUtil.closeSession();</span>
+<span class="fc" id="L38">            return item;</span>
+<span class="nc" id="L39">        } catch (Exception e) {</span>
+<span class="nc" id="L40">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L41">            throw new BarManagementDBException(&quot;Cannot read item with id &quot; + itemId, e);</span>
+        }
+    }
+
+    public void create(Item item) throws BarManagementDBException {
+        try {
+<span class="fc" id="L47">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L48">            session.beginTransaction();</span>
+<span class="fc" id="L49">            Integer itemId = (Integer) session.save(item);</span>
+<span class="fc" id="L50">            item.setItemId(itemId); // set the auto-generated item_number</span>
+<span class="fc" id="L51">            System.out.println(itemId);</span>
+<span class="fc" id="L52">            session.getTransaction().commit();</span>
+<span class="fc" id="L53">            MyUtil.closeSession();</span>
+<span class="nc" id="L54">        } catch (Exception e) {</span>
+<span class="nc" id="L55">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L56">            throw new BarManagementDBException(&quot;Cannot create item &quot; + item, e);</span>
+<span class="fc" id="L57">        }</span>
+<span class="fc" id="L58">    }</span>
+
+    public boolean removeItem(int itemId) throws BarManagementDBException {
+        try {
+<span class="fc" id="L62">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L63">            session.beginTransaction();</span>
+<span class="fc" id="L64">            Item item = session.get(Item.class, itemId);</span>
+<span class="fc" id="L65">            session.delete(item);</span>
+<span class="fc" id="L66">            session.getTransaction().commit();</span>
+<span class="fc" id="L67">            MyUtil.closeSession();</span>
+<span class="fc" id="L68">            return true;</span>
+<span class="nc" id="L69">        } catch (Exception e) {</span>
+<span class="nc" id="L70">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L71">            throw new BarManagementDBException(&quot;Cannot read item with id &quot; + itemId, e);</span>
+        }
+    }
+
+    public boolean updateItem(Item item) throws BarManagementDBException {
+        try {
+<span class="fc" id="L77">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L78">            session.beginTransaction();</span>
+<span class="fc" id="L79">            Item oldItem = session.get(Item.class, item.getItemId());</span>
+<span class="fc" id="L80">            oldItem.setItemName(item.getItemName());</span>
+<span class="fc" id="L81">            oldItem.setPrice(item.getPrice());</span>
+<span class="fc" id="L82">            session.getTransaction().commit();</span>
+<span class="fc" id="L83">            MyUtil.closeSession();</span>
+<span class="fc" id="L84">            return true;</span>
+<span class="nc" id="L85">        } catch (Exception e) {</span>
+<span class="nc" id="L86">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L87">            throw new BarManagementDBException(&quot;Cannot read item with id &quot; + item.getItemId(), e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

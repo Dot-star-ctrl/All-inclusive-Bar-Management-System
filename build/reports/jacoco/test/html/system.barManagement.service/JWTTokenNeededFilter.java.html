@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JWTTokenNeededFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service</a> &gt; <span class="el_source">JWTTokenNeededFilter.java</span></div><h1>JWTTokenNeededFilter.java</h1><pre class="source lang-java linenums">package system.barManagement.service;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.Encoders;
+import io.jsonwebtoken.security.Keys;
+import system.barManagement.service.model.Employee;
+import system.barManagement.service.repository.HibernateEmployeesRepository;
+import system.barManagement.service.resources.AuthenticationEndpoint;
+
+import javax.annotation.Priority;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.inject.Inject;
+import javax.ws.rs.Priorities;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ResourceInfo;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.ext.Provider;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.security.Key;
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+@Provider
+@JWTTokenNeeded
+@Priority(Priorities.AUTHENTICATION)
+<span class="nc" id="L39">public class JWTTokenNeededFilter implements ContainerRequestFilter {</span>
+
+    private static final String REALM = &quot;example&quot;;
+    private static final String AUTHENTICATION_SCHEME = &quot;Bearer=&quot;;
+
+    @Context
+    private ResourceInfo resourceInfo;
+
+    @Override
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+
+        // Get the HTTP Authorization header from the request
+<span class="nc" id="L51">        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);</span>
+<span class="nc" id="L52">        System.out.println(authorizationHeader);</span>
+        // Validate the Authorization header
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (!isTokenBasedAuthentication(authorizationHeader)) {</span>
+<span class="nc" id="L55">            abortWithUnauthorized(requestContext);</span>
+<span class="nc" id="L56">            return;</span>
+        }
+        
+        // Extract the token from the HTTP Authorization header
+<span class="nc" id="L60">        String token = authorizationHeader</span>
+<span class="nc" id="L61">                .substring(AUTHENTICATION_SCHEME.length()).trim();</span>
+        try {
+
+<span class="nc" id="L64">            System.out.println(&quot;second: &quot; + AuthenticationEndpoint.key);</span>
+<span class="nc" id="L65">            Jwts.parserBuilder().setSigningKey(AuthenticationEndpoint.key).build().parseClaimsJws(token);</span>
+<span class="nc" id="L66">            System.out.println(&quot;#### valid token : &quot; + token);</span>
+
+<span class="nc" id="L68">            String username = Jwts.parserBuilder().setSigningKey(AuthenticationEndpoint.key).build().parseClaimsJws(token).getBody().getSubject();</span>
+
+
+            /* Get information about the service method which is being called.
+            This information includes the annotated/permitted roles. */
+<span class="nc" id="L73">            Method method = resourceInfo.getResourceMethod();</span>
+            // if access is allowed for all -&gt; do not check anything further : access is
+            // approved for all
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (method.isAnnotationPresent(PermitAll.class)) {</span>
+<span class="nc" id="L77">                return;</span>
+            }
+
+            // if access is denied for all: deny access
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (method.isAnnotationPresent(DenyAll.class)) {</span>
+<span class="nc" id="L82">                Response response = Response.status(Response.Status.FORBIDDEN).build();</span>
+<span class="nc" id="L83">                requestContext.abortWith(response);</span>
+<span class="nc" id="L84">                return;</span>
+            }
+
+            /* here you do
+            1. the AUTHENTICATION first (as explained in previous sections), and
+            2. if AUTHENTICATION succeeds, you do the authorization like this:
+            */
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (method.isAnnotationPresent(RolesAllowed.class)) {</span>
+                // get allowed roles for this method
+<span class="nc" id="L94">                RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);</span>
+<span class="nc" id="L95">                Set&lt;String&gt; rolesSet = new HashSet&lt;String&gt;(Arrays.asList(rolesAnnotation.value()));</span>
+
+            /* isUserAllowed : implement this method to check if this user has any of
+            the roles in the rolesSet
+            if not isUserAllowed abort the requestContext with FORBIDDEN response*/
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                if (!isUserAllowed(username, rolesSet)) {</span>
+<span class="nc" id="L102">                    abortWithUnauthorized(requestContext);</span>
+<span class="nc" id="L103">                    return;</span>
+                }
+            }
+<span class="nc" id="L106">        } catch (Exception e) {</span>
+<span class="nc" id="L107">            abortWithUnauthorized(requestContext);</span>
+<span class="nc" id="L108">            System.out.println(&quot;#### invalid token : &quot; + token);</span>
+<span class="nc" id="L109">        }</span>
+<span class="nc" id="L110">    }</span>
+
+    private boolean isTokenBasedAuthentication(String authorizationHeader) {
+        // Check if the Authorization header is valid
+        // It must not be null and must be prefixed with &quot;Bearer&quot; plus a whitespace
+        // The authentication scheme comparison must be case-insensitive
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        return authorizationHeader != null &amp;&amp; authorizationHeader.toLowerCase()</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                .startsWith(AUTHENTICATION_SCHEME.toLowerCase());</span>
+    }
+
+    private void abortWithUnauthorized(ContainerRequestContext requestContext) {
+
+        // Abort the filter chain with a 401 status code response
+        // The WWW-Authenticate header is sent along with the response
+<span class="nc" id="L124">        requestContext.abortWith(</span>
+<span class="nc" id="L125">                Response.status(Response.Status.UNAUTHORIZED)</span>
+<span class="nc" id="L126">                        .header(HttpHeaders.WWW_AUTHENTICATE,</span>
+                                AUTHENTICATION_SCHEME + &quot; realm=\&quot;&quot; + REALM + &quot;\&quot;&quot;)
+<span class="nc" id="L128">                        .build());</span>
+<span class="nc" id="L129">    }</span>
+
+    private boolean isUserAllowed(String username, Set&lt;String&gt; rolesSet) {
+<span class="nc" id="L132">        HibernateEmployeesRepository employeesRepository = new HibernateEmployeesRepository();</span>
+
+        try {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            for (Employee employee : employeesRepository.getEmployees()) {</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">                if (employee.getUsername().equals(username)) {</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">                    for (String role : rolesSet) {</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                        if (employee.getAccountType().toString().equals(role)) {</span>
+<span class="nc" id="L139">                            System.out.println(employee.getAccountType().toString());</span>
+<span class="nc" id="L140">                            System.out.println(role);</span>
+<span class="nc" id="L141">                            return true;</span>
+                        }
+                        else{
+<span class="nc" id="L144">                            return false;</span>
+                        }
+                    }
+                }
+<span class="nc" id="L148">            }</span>
+<span class="nc" id="L149">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L150">            e.printStackTrace();</span>
+<span class="nc" id="L151">            return false;</span>
+<span class="nc" id="L152">        }</span>
+<span class="nc" id="L153">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeesController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.controllers</a> &gt; <span class="el_source">EmployeesController.java</span></div><h1>EmployeesController.java</h1><pre class="source lang-java linenums">package system.barManagement.service.controllers;
+
+import system.barManagement.service.BarManagementDBException;
+import system.barManagement.service.model.AccountType;
+import system.barManagement.service.model.Employee;
+import system.barManagement.service.repository.HibernateEmployeesRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L11">public class EmployeesController {</span>
+
+<span class="fc" id="L13">    HibernateEmployeesRepository employeesRepository = new HibernateEmployeesRepository();</span>
+
+    /**
+     * Show/print the employee with given employee id
+     *
+     * @param employeeId of the employee to be shown.
+     */
+    public Employee showEmployee(int employeeId) {
+        try {
+<span class="fc" id="L22">            Employee employee = employeesRepository.getEmployee(employeeId);</span>
+<span class="fc" id="L23">            return employee;</span>
+<span class="nc" id="L24">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L25">            e.printStackTrace();</span>
+<span class="nc" id="L26">            return null;</span>
+        }
+    }
+
+    /**
+     * Show/print all employees.
+     */
+    public List&lt;Employee&gt; showAllEmployees() {
+        try {
+<span class="fc" id="L35">            List&lt;Employee&gt; employees = employeesRepository.getEmployees();</span>
+<span class="fc" id="L36">            return employees;</span>
+<span class="nc" id="L37">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L38">            e.printStackTrace();</span>
+<span class="nc" id="L39">            return null;</span>
+        }
+    }
+
+    /**
+     * Add/create a new employee.
+     *
+     */
+    public boolean addEmployee(Employee employee) {
+        try {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            if(employeesRepository.getEmployee(employee.getEmployeeId()) != null){</span>
+<span class="nc" id="L50">                return false;</span>
+            }
+            else{
+<span class="fc" id="L53">                employeesRepository.create(employee);</span>
+<span class="fc" id="L54">                return true;</span>
+            }
+<span class="nc" id="L56">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L57">            e.printStackTrace();</span>
+<span class="nc" id="L58">            return false;</span>
+        }
+    }
+
+    /**
+     * Deletes an employee.
+     *
+     */
+    public boolean deleteEmployee(int employeeId) {
+        try {
+<span class="fc" id="L68">            employeesRepository.removeEmployee(employeeId);</span>
+<span class="fc" id="L69">            return true;</span>
+<span class="nc" id="L70">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L71">            e.printStackTrace();</span>
+<span class="nc" id="L72">            return false;</span>
+        }
+    }
+
+    /**
+     * Updates an employee.
+     *
+     */
+    public boolean updateEmployee(Employee employee) {
+        try {
+<span class="fc" id="L82">            Employee old = employeesRepository.getEmployee(employee.getEmployeeId());</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            if (old == null) {</span>
+<span class="nc" id="L84">                return false;</span>
+            }
+            else{
+<span class="fc" id="L87">                employeesRepository.updateEmployee(employee);</span>
+<span class="fc" id="L88">                return true;</span>
+            }
+<span class="nc" id="L90">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L91">            e.printStackTrace();</span>
+<span class="nc" id="L92">            return false;</span>
+        }
+    }
+
+    public List&lt;Employee&gt; getEmployeesByAccountType(AccountType accountType){
+        try {
+<span class="fc" id="L98">            List&lt;Employee&gt; employeesByAccount = new ArrayList&lt;Employee&gt;();</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            for (Employee employee : employeesRepository.getEmployees()) {</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">                if (employee.getAccountType() == accountType) {</span>
+<span class="fc" id="L101">                    employeesByAccount.add(employee);</span>
+                }
+<span class="fc" id="L103">            }</span>
+<span class="fc" id="L104">            return employeesByAccount;</span>
+<span class="nc" id="L105">        }catch (BarManagementDBException e) {</span>
+<span class="nc" id="L106">            e.printStackTrace();</span>
+<span class="nc" id="L107">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

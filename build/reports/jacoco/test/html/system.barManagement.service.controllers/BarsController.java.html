@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BarsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.controllers</a> &gt; <span class="el_source">BarsController.java</span></div><h1>BarsController.java</h1><pre class="source lang-java linenums">package system.barManagement.service.controllers;
+
+import system.barManagement.service.BarManagementDBException;
+import system.barManagement.service.model.Bar;
+import system.barManagement.service.repository.HibernateBarsRepository;
+
+import java.util.List;
+
+<span class="fc" id="L9">public class BarsController {</span>
+
+<span class="fc" id="L11">    HibernateBarsRepository barsRepository = new HibernateBarsRepository();</span>
+
+    /**
+     * Show/print all bars.
+     *
+     */
+    public List&lt;Bar&gt; showAllBars() {
+        try {
+<span class="fc" id="L19">            List&lt;Bar&gt; bars = barsRepository.getBars();</span>
+<span class="fc" id="L20">            System.out.println(&quot;All bars&quot;);</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            for (Bar bar : bars) {</span>
+<span class="fc" id="L22">                System.out.println(&quot;\t&quot; + bar);</span>
+<span class="fc" id="L23">            }</span>
+<span class="fc" id="L24">            return bars;</span>
+<span class="nc" id="L25">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L26">            e.printStackTrace();</span>
+<span class="nc" id="L27">            return null;</span>
+        }
+    }
+
+    /**
+     * Show/print the bar with given bar id
+     *
+     */
+    public Bar showBar(int barId) {
+        try {
+<span class="fc" id="L37">            Bar bar = barsRepository.getBar(barId);</span>
+<span class="fc" id="L38">            return bar;</span>
+<span class="nc" id="L39">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L40">            e.printStackTrace();</span>
+<span class="nc" id="L41">            return null;</span>
+        }
+    }
+
+    /**
+     * Add/create a new bar.
+     *
+     */
+    public boolean addBar(Bar bar) {
+        try {
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">            if(barsRepository.getBar(bar.getBarId()) != null){</span>
+<span class="nc" id="L52">                return false;</span>
+            }
+            else{
+<span class="fc" id="L55">                barsRepository.create(bar);</span>
+<span class="fc" id="L56">                return true;</span>
+            }
+<span class="nc" id="L58">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L59">            e.printStackTrace();</span>
+<span class="nc" id="L60">            return false;</span>
+        }
+    }
+
+    /**
+     * Deletes a bar.
+     *
+     */
+    public boolean deleteBar(int barId) {
+        try {
+<span class="fc" id="L70">            barsRepository.removeBar(barId);</span>
+<span class="fc" id="L71">            return true;</span>
+<span class="nc" id="L72">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L73">            e.printStackTrace();</span>
+<span class="nc" id="L74">            return false;</span>
+        }
+    }
+
+    /**
+     * Updates a bar.
+     *
+     */
+    public boolean updateBar(Bar bar) {
+        try {
+<span class="fc" id="L84">            Bar old = barsRepository.getBar(bar.getBarId());</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">            if (old == null) {</span>
+<span class="nc" id="L86">                return false;</span>
+            }
+            else{
+<span class="fc" id="L89">                barsRepository.updateBar(bar);</span>
+<span class="fc" id="L90">                return true;</span>
+            }
+<span class="nc" id="L92">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L93">            e.printStackTrace();</span>
+<span class="nc" id="L94">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

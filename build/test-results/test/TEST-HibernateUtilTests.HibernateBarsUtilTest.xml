@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="HibernateUtilTests.HibernateBarsUtilTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-01-22T08:50:21" hostname="DESKTOP-8QUU4FI" time="0.161">
+  <properties/>
+  <testcase name="testCreate()" classname="HibernateUtilTests.HibernateBarsUtilTest" time="0.082"/>
+  <testcase name="GetTest()" classname="HibernateUtilTests.HibernateBarsUtilTest" time="0.017"/>
+  <testcase name="testUpdate()" classname="HibernateUtilTests.HibernateBarsUtilTest" time="0.06"/>
+  <system-out><![CDATA[Running testCreate...
+Running testGet...
+Running testUpdate...
+]]></system-out>
+  <system-err><![CDATA[Jan 22, 2021 9:50:17 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 5.4.14.Final
+Jan 22, 2021 9:50:18 AM org.hibernate.annotations.common.reflection.java.JavaReflectionManager <clinit>
+INFO: HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+Jan 22, 2021 9:50:18 AM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.SQLiteDialect
+Jan 22, 2021 9:50:19 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+Jan 22, 2021 9:50:19 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: using driver [com.mysql.cj.jdbc.Driver] at URL [jdbc:mysql://localhost/barmanagementdb]
+Jan 22, 2021 9:50:19 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=root}
+Jan 22, 2021 9:50:19 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+Jan 22, 2021 9:50:19 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH000115: Hibernate connection pool size: 5 (min=1)
+Jan 22, 2021 9:50:19 AM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+Jan 22, 2021 9:50:21 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+]]></system-err>
+</testsuite>

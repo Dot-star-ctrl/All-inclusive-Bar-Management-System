@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="HibernateUtilTests.HibernateWarehouseUtilTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-01-22T08:50:25" hostname="DESKTOP-8QUU4FI" time="0.132">
+  <properties/>
+  <testcase name="testCreate()" classname="HibernateUtilTests.HibernateWarehouseUtilTest" time="0.072"/>
+  <testcase name="GetTest()" classname="HibernateUtilTests.HibernateWarehouseUtilTest" time="0.003"/>
+  <testcase name="testUpdate()" classname="HibernateUtilTests.HibernateWarehouseUtilTest" time="0.057"/>
+  <system-out><![CDATA[Running testCreate...
+Running testGet...
+Running testUpdate...
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

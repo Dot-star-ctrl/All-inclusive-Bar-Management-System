@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  backend:
+    image: georgim123/bms-back
+    container_name: bms-back
+    ports:
+      - 8090:8090
+
+  frontend:
+    image: georgim123/bms-front
+    container_name: bms-front
+    ports:
+      - 8080:8080
+    depends_on:
+      - backend
+
+      

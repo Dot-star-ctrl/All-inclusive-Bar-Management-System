@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WarehouseResources.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.resources</a> &gt; <span class="el_source">WarehouseResources.java</span></div><h1>WarehouseResources.java</h1><pre class="source lang-java linenums">package system.barManagement.service.resources;
+
+import system.barManagement.service.JWTTokenNeeded;
+import system.barManagement.service.controllers.WarehouseStocksController;
+import system.barManagement.service.model.WarehouseStock;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.util.List;
+
+@JWTTokenNeeded
+@Path(&quot;/warehouse&quot;)
+<span class="fc" id="L15">public class WarehouseResources {</span>
+
+    @Context
+    private UriInfo uriInfo;
+    SecurityContext securityContext;
+<span class="fc" id="L20">    private static final WarehouseStocksController stocksController = new WarehouseStocksController();</span>
+
+    @GET //GET at http://localhost:XXXX/warehouse/
+    @RolesAllowed(&quot;BAR_MANAGER, WAREHOUSE_KEEPER&quot;)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllWarehouseItems() {
+        List&lt;WarehouseStock&gt; stocks;
+<span class="fc" id="L27">        stocks = stocksController.showAllWarehouseStocks();</span>
+<span class="fc" id="L28">        return Response.ok(stocks).build();</span>
+    }
+
+    @GET //GET at http://localhost:XXXX/warehouse/2
+    @RolesAllowed(&quot;BAR_MANAGER, WAREHOUSE_KEEPER&quot;)
+    @Path(&quot;{id}&quot;)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getWarehouseStock(@PathParam(&quot;id&quot;) int id) {
+<span class="fc" id="L36">        WarehouseStock stock = stocksController.showStock(id);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (stock == null) {</span>
+<span class="nc" id="L38">            return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Please provide a valid stock id.&quot;).build();</span>
+        } else {
+<span class="fc" id="L40">            return Response.ok(stock).build();</span>
+        }
+    }
+
+
+    @POST //POST at http://localhost:XXXX/warehouse/
+    @RolesAllowed(&quot;WAREHOUSE_KEEPER&quot;)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createWarehouseStock(WarehouseStock stock) {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (!stocksController.addWarehouseStock(stock)){</span>
+<span class="nc" id="L50">            String entity =  &quot;Stock with id &quot; + stock.getWarehouseStockId() + &quot; already exists.&quot;;</span>
+<span class="nc" id="L51">            return Response.status(Response.Status.CONFLICT).entity(entity).build();</span>
+        } else {
+<span class="fc" id="L53">            String url = uriInfo.getAbsolutePath() + &quot;/&quot; + stock.getWarehouseStockId(); // url of the created stock</span>
+<span class="fc" id="L54">            URI uri = URI.create(url);</span>
+<span class="fc" id="L55">            return Response.created(uri).build();</span>
+        }
+    }
+
+    @PUT //PUT at http://localhost:XXXX/warehouse/
+    @RolesAllowed(&quot;WAREHOUSE_KEEPER&quot;)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path(&quot;{id}&quot;)
+    public Response updateWarehouseStock(WarehouseStock stock) {
+        // Idempotent method. Always update (even if the resource has already been updated before).
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (stocksController.updateWarehouseStock(stock)) {</span>
+<span class="fc" id="L66">            return Response.noContent().build();</span>
+        } else {
+<span class="nc" id="L68">            return Response.status(Response.Status.NOT_FOUND).entity(&quot;Please provide a valid stock id.&quot;).build();</span>
+        }
+    }
+
+    @DELETE //DELETE at http://localhost:XXXX/warehouse/3
+    @RolesAllowed(&quot;WAREHOUSE_KEEPER&quot;)
+    @Path(&quot;{id}&quot;)
+    public Response deleteWarehouseStock(@PathParam(&quot;id&quot;) int id) {
+<span class="fc" id="L76">        stocksController.deleteWarehouseStock(id);</span>
+        // Idempotent method. Always return the same response (even if the resource has already been deleted before).
+<span class="fc" id="L78">        return Response.noContent().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

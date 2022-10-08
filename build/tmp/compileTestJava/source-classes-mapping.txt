@@ -1,0 +1,26 @@
+APITests/BarsResourceIntegrationTest.java
+ APITests.BarsResourceIntegrationTest
+HibernateUtilTests/HibernateItemsUtilTest.java
+ HibernateUtilTests.HibernateItemsUtilTest
+APITests/ItemsResourceIntegrationTest.java
+ APITests.ItemsResourceIntegrationTest
+Models/ItemsTest.java
+ Models.ItemsTest
+Models/StockRequestsTest.java
+ Models.StockRequestsTest
+Models/BarsTest.java
+ Models.BarsTest
+APITests/EmployeesResourceIntegrationTest.java
+ APITests.EmployeesResourceIntegrationTest
+Models/WarehouseStocksTest.java
+ Models.WarehouseStocksTest
+Models/EmployeesTest.java
+ Models.EmployeesTest
+HibernateUtilTests/HibernateBarsUtilTest.java
+ HibernateUtilTests.HibernateBarsUtilTest
+HibernateUtilTests/HibernateWarehouseUtilTest.java
+ HibernateUtilTests.HibernateWarehouseUtilTest
+HibernateUtilTests/HibernateEmployeesUtilTest.java
+ HibernateUtilTests.HibernateEmployeesUtilTest
+APITests/WarehouseResourcesIntegrationTest.java
+ APITests.WarehouseResourcesIntegrationTest

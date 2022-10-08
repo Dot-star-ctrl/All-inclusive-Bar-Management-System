@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.controllers</a> &gt; <span class="el_source">ItemsController.java</span></div><h1>ItemsController.java</h1><pre class="source lang-java linenums">package system.barManagement.service.controllers;
+
+import system.barManagement.service.BarManagementDBException;
+import system.barManagement.service.model.Item;
+import system.barManagement.service.repository.HibernateItemsRepository;
+
+import java.util.List;
+
+<span class="fc" id="L9">public class ItemsController {</span>
+
+<span class="fc" id="L11">    HibernateItemsRepository itemsRepository = new HibernateItemsRepository();</span>
+
+    /**
+     * Show/print all items.
+     *
+     */
+    public List&lt;Item&gt; showAllItems() {
+        try {
+<span class="fc" id="L19">            List&lt;Item&gt; items = itemsRepository.getItems();</span>
+<span class="fc" id="L20">            System.out.println(&quot;All items&quot;);</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            for (Item item : items) {</span>
+<span class="fc" id="L22">                System.out.println(&quot;\t&quot; + item);</span>
+<span class="fc" id="L23">            }</span>
+<span class="fc" id="L24">            return items;</span>
+<span class="nc" id="L25">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L26">            e.printStackTrace();</span>
+<span class="nc" id="L27">            return null;</span>
+        }
+    }
+
+    /**
+     * Show/print the item with given item id
+     *
+     * @param itemId of the item to be shown.
+     */
+    public Item showItem(int itemId) {
+        try {
+<span class="fc" id="L38">            Item item = itemsRepository.getItem(itemId);</span>
+<span class="fc" id="L39">            return item;</span>
+<span class="nc" id="L40">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L41">            e.printStackTrace();</span>
+<span class="nc" id="L42">            return null;</span>
+        }
+    }
+
+    /**
+     * Add/create a new item.
+     *
+     */
+    public boolean addItem(Item item) {
+        try {
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">            if(itemsRepository.getItem(item.getItemId()) != null){</span>
+<span class="nc" id="L53">                return false;</span>
+            }
+            else{
+<span class="fc" id="L56">                itemsRepository.create(item);</span>
+<span class="fc" id="L57">                return true;</span>
+            }
+<span class="nc" id="L59">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L60">            e.printStackTrace();</span>
+<span class="nc" id="L61">            return false;</span>
+        }
+    }
+
+    /**
+     * Updates an item.
+     *
+     */
+    public boolean updateItem(Item item) {
+        try {
+<span class="fc" id="L71">            Item old = itemsRepository.getItem(item.getItemId());</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">            if (old == null) {</span>
+<span class="nc" id="L73">                System.out.println(&quot;false&quot;);</span>
+<span class="nc" id="L74">                return false;</span>
+            }
+            else{
+<span class="fc" id="L77">                System.out.println(&quot;true&quot;);</span>
+<span class="fc" id="L78">                itemsRepository.updateItem(item);</span>
+<span class="fc" id="L79">                return true;</span>
+            }
+<span class="nc" id="L81">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L82">            e.printStackTrace();</span>
+<span class="nc" id="L83">            return false;</span>
+        }
+    }
+
+    /**
+     * Deletes an item.
+     *
+     */
+    public boolean deleteItem(int itemId) {
+        try {
+<span class="fc" id="L93">            itemsRepository.removeItem(itemId);</span>
+<span class="fc" id="L94">            return true;</span>
+<span class="nc" id="L95">        } catch (BarManagementDBException e) {</span>
+<span class="nc" id="L96">            e.printStackTrace();</span>
+<span class="nc" id="L97">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

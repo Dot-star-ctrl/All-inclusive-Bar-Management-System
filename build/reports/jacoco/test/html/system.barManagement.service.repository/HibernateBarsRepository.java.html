@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HibernateBarsRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.repository</a> &gt; <span class="el_source">HibernateBarsRepository.java</span></div><h1>HibernateBarsRepository.java</h1><pre class="source lang-java linenums">package system.barManagement.service.repository;
+
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
+import system.barManagement.service.BarManagementDBException;
+import system.barManagement.service.model.Bar;
+import org.hibernate.cfg.Configuration;
+import system.barManagement.service.model.Employee;
+
+import java.util.List;
+
+<span class="fc" id="L17">public class HibernateBarsRepository {</span>
+
+    public List&lt;Bar&gt; getBars() throws BarManagementDBException {
+        try {
+<span class="fc" id="L21">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L22">            session.beginTransaction();</span>
+<span class="fc" id="L23">            List&lt;Bar&gt; result = session.createQuery(&quot;from Bar &quot;, Bar.class).list();</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            for (Bar bar : result) {</span>
+<span class="fc" id="L25">                Hibernate.initialize(bar.getBarName());</span>
+<span class="fc" id="L26">            }</span>
+<span class="fc" id="L27">            session.getTransaction().commit();</span>
+<span class="fc" id="L28">            MyUtil.closeSession();</span>
+<span class="fc" id="L29">            return result;</span>
+<span class="nc" id="L30">        } catch (Exception e) {</span>
+<span class="nc" id="L31">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L32">            throw new BarManagementDBException(&quot;Cannot read bars from the database&quot;, e);</span>
+        }
+    }
+
+    public Bar getBar(int barId) throws BarManagementDBException {
+        try {
+<span class="fc" id="L38">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L39">            session.beginTransaction();</span>
+<span class="fc" id="L40">            Bar bar = session.get(Bar.class, barId);</span>
+<span class="fc" id="L41">            session.getTransaction().commit();</span>
+<span class="fc" id="L42">            MyUtil.closeSession();</span>
+<span class="fc" id="L43">            return bar;</span>
+<span class="nc" id="L44">        } catch (Exception e) {</span>
+<span class="nc" id="L45">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L46">            throw new BarManagementDBException(&quot;Cannot read bar with id &quot; + barId, e);</span>
+        }
+
+    }
+
+    public void create(Bar bar) throws BarManagementDBException {
+        try {
+<span class="fc" id="L53">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L54">            session.beginTransaction();</span>
+            // insert bar to the database and get the auto-generated bar_id
+<span class="fc" id="L56">            Integer barId = (Integer) session.save(bar);</span>
+<span class="fc" id="L57">            bar.setBarId(barId); // set the auto-generated bar_id</span>
+<span class="fc" id="L58">            session.getTransaction().commit();</span>
+<span class="fc" id="L59">            System.out.println(barId);</span>
+<span class="fc" id="L60">            MyUtil.closeSession();</span>
+<span class="nc" id="L61">        } catch (Exception e) {</span>
+<span class="nc" id="L62">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L63">            throw new BarManagementDBException(&quot;Cannot create bar &quot; + bar, e);</span>
+<span class="fc" id="L64">        }</span>
+<span class="fc" id="L65">    }</span>
+
+    public boolean removeBar(int barId) throws BarManagementDBException {
+        try {
+<span class="fc" id="L69">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L70">            session.beginTransaction();</span>
+<span class="fc" id="L71">            Bar bar = session.get(Bar.class, barId);</span>
+<span class="fc" id="L72">            session.delete(bar);</span>
+<span class="fc" id="L73">            session.getTransaction().commit();</span>
+<span class="fc" id="L74">            MyUtil.closeSession();</span>
+<span class="fc" id="L75">            return true;</span>
+<span class="nc" id="L76">        } catch (Exception e) {</span>
+<span class="nc" id="L77">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L78">            throw new BarManagementDBException(&quot;Cannot read bar with id &quot; + barId, e);</span>
+        }
+    }
+
+    public boolean updateBar(Bar bar) throws BarManagementDBException {
+        try {
+<span class="fc" id="L84">            Session session = MyUtil.getSession();</span>
+<span class="fc" id="L85">            session.beginTransaction();</span>
+<span class="fc" id="L86">            Bar oldBar = session.get(Bar.class, bar.getBarId());</span>
+<span class="fc" id="L87">            oldBar.setBarName(bar.getBarName());</span>
+<span class="fc" id="L88">            oldBar.setAssignedBartender(bar.getAssignedBartender());</span>
+<span class="fc" id="L89">            session.getTransaction().commit();</span>
+<span class="fc" id="L90">            MyUtil.closeSession();</span>
+<span class="fc" id="L91">            return true;</span>
+<span class="nc" id="L92">        } catch (Exception e) {</span>
+<span class="nc" id="L93">            MyUtil.closeSessionFactory();</span>
+<span class="nc" id="L94">            throw new BarManagementDBException(&quot;Cannot read bar with id &quot; + bar.getBarId(), e);</span>
+
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Main-Class: system.barManagement.service.Publisher
+Implementation-Title: barManagementSystem
+Implementation-Version: unspecified
+Built-By: 35989
+Built-Host: DESKTOP-8QUU4FI
+Built-Date: 2021-01-22T08:50:13Z
+Built-OS: Windows 10 10.0 amd64
+Built-JDK: 14.0.2 Oracle Corporation
+SCM-Repository: https://git.fhict.nl/I425926/s3-cb04_individual_track_ge
+ orgi_minchev.git
+SCM-Branch: refs/heads/feature/unit-tests
+SCM-Commit-Message: utility tests, login bug fixed
+SCM-Commit-Hash: b86fdb898d053e60f9b79efe2a6898ff85810ef1
+SCM-Commit-Author: i425926 <g.minchev@student.fontys.nl>
+SCM-Commit-Date: 2021-01-04T08:44:53Z
+Class-Path: dependencies/javax.ws.rs-api-2.1.1.jar dependencies/jjwt-api
+ -0.11.2.jar dependencies/selenium-java-3.141.59.jar dependencies/seleni
+ um-chrome-driver-3.141.59.jar dependencies/selenium-edge-driver-3.141.5
+ 9.jar dependencies/selenium-firefox-driver-3.141.59.jar dependencies/se
+ lenium-ie-driver-3.141.59.jar dependencies/selenium-opera-driver-3.141.
+ 59.jar dependencies/selenium-safari-driver-3.141.59.jar dependencies/se
+ lenium-support-3.141.59.jar dependencies/selenium-remote-driver-3.141.5
+ 9.jar dependencies/selenium-api-3.141.59.jar dependencies/byte-buddy-1.
+ 8.15.jar dependencies/commons-exec-1.3.jar dependencies/guava-25.0-jre.
+ jar dependencies/okhttp-3.11.0.jar dependencies/okio-1.14.0.jar depende
+ ncies/jsr305-1.3.9.jar dependencies/checker-compat-qual-2.0.0.jar depen
+ dencies/error_prone_annotations-2.1.3.jar dependencies/j2objc-annotatio
+ ns-1.1.jar dependencies/animal-sniffer-annotations-1.14.jar
+

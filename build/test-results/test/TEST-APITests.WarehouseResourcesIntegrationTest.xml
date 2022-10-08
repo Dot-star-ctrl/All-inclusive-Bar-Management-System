@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="APITests.WarehouseResourcesIntegrationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2021-01-22T08:50:30" hostname="DESKTOP-8QUU4FI" time="0.727">
+  <properties/>
+  <testcase name="Test1CreateWarehouseStock" classname="APITests.WarehouseResourcesIntegrationTest" time="0.147"/>
+  <testcase name="Test2GetWarehouseStocks" classname="APITests.WarehouseResourcesIntegrationTest" time="0.1"/>
+  <testcase name="Test3GetWarehouseStockById" classname="APITests.WarehouseResourcesIntegrationTest" time="0.095"/>
+  <testcase name="Test4UpdateWarehouseStocks" classname="APITests.WarehouseResourcesIntegrationTest" time="0.237"/>
+  <testcase name="Test5DeleteBars" classname="APITests.WarehouseResourcesIntegrationTest" time="0.147"/>
+  <system-out><![CDATA[2
+]]></system-out>
+  <system-err><![CDATA[Jan 22, 2021 9:50:30 AM org.glassfish.jersey.test.grizzly.GrizzlyTestContainerFactory$GrizzlyTestContainer <init>
+INFO: Creating GrizzlyTestContainer configured at the base URI http://localhost:9998/
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener start
+INFO: Started listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.HttpServer start
+INFO: [HttpServer-16] Started.
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener shutdownNow
+INFO: Stopped listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.jersey.test.grizzly.GrizzlyTestContainerFactory$GrizzlyTestContainer <init>
+INFO: Creating GrizzlyTestContainer configured at the base URI http://localhost:9998/
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener start
+INFO: Started listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.HttpServer start
+INFO: [HttpServer-17] Started.
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener shutdownNow
+INFO: Stopped listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.jersey.test.grizzly.GrizzlyTestContainerFactory$GrizzlyTestContainer <init>
+INFO: Creating GrizzlyTestContainer configured at the base URI http://localhost:9998/
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener start
+INFO: Started listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.HttpServer start
+INFO: [HttpServer-18] Started.
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener shutdownNow
+INFO: Stopped listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.jersey.test.grizzly.GrizzlyTestContainerFactory$GrizzlyTestContainer <init>
+INFO: Creating GrizzlyTestContainer configured at the base URI http://localhost:9998/
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener start
+INFO: Started listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.HttpServer start
+INFO: [HttpServer-19] Started.
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener shutdownNow
+INFO: Stopped listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.jersey.test.grizzly.GrizzlyTestContainerFactory$GrizzlyTestContainer <init>
+INFO: Creating GrizzlyTestContainer configured at the base URI http://localhost:9998/
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener start
+INFO: Started listener bound to [localhost:9998]
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.HttpServer start
+INFO: [HttpServer-20] Started.
+Jan 22, 2021 9:50:30 AM org.glassfish.grizzly.http.server.NetworkListener shutdownNow
+INFO: Stopped listener bound to [localhost:9998]
+]]></system-err>
+</testsuite>

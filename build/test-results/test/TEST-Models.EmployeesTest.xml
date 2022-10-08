@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Models.EmployeesTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2021-01-22T08:50:26" hostname="DESKTOP-8QUU4FI" time="0.003">
+  <properties/>
+  <testcase name="setPasswordTest()" classname="Models.EmployeesTest" time="0.0"/>
+  <testcase name="setUsernameTest()" classname="Models.EmployeesTest" time="0.001"/>
+  <testcase name="setEmployeeIdTest()" classname="Models.EmployeesTest" time="0.001"/>
+  <testcase name="setAccountTypeTest()" classname="Models.EmployeesTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

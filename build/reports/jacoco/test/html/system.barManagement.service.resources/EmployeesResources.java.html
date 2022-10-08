@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeesResources.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.resources</a> &gt; <span class="el_source">EmployeesResources.java</span></div><h1>EmployeesResources.java</h1><pre class="source lang-java linenums">package system.barManagement.service.resources;
+
+import system.barManagement.service.JWTTokenNeeded;
+import system.barManagement.service.controllers.EmployeesController;
+import system.barManagement.service.model.AccountType;
+import system.barManagement.service.model.Employee;
+
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.util.List;
+
+@JWTTokenNeeded
+@Path(&quot;/employees&quot;)
+<span class="fc" id="L17">public class EmployeesResources {</span>
+
+    @Context
+    private UriInfo uriInfo;
+    SecurityContext securityContext;
+<span class="fc" id="L22">    private static final EmployeesController employeesController = new EmployeesController();</span>
+
+    @GET //GET at http://localhost:XXXX/employees/
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllEmployees() {
+        List&lt;Employee&gt; employees;
+<span class="fc" id="L29">        employees = employeesController.showAllEmployees();</span>
+<span class="fc" id="L30">        return Response.ok(employees).build();</span>
+    }
+
+    @GET //GET at http://localhost:XXXX/employees/2
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Path(&quot;{id}&quot;)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployee(@PathParam(&quot;id&quot;) int id) {
+<span class="fc" id="L38">        Employee employee = employeesController.showEmployee(id);</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (employee == null) {</span>
+<span class="nc" id="L40">            return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Please provide a valid employee id.&quot;).build();</span>
+        } else {
+<span class="fc" id="L42">            return Response.ok(employee).build();</span>
+        }
+    }
+
+    @GET //GET at http://localhost:XXXX/employees/account/BAR_MANAGER
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Path(&quot;/account/{accountType}&quot;)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployeesByAccountType(@PathParam(&quot;accountType&quot;) AccountType accountType) {
+<span class="fc" id="L51">        List&lt;Employee&gt; employees = employeesController.getEmployeesByAccountType(accountType);</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (employees == null) {</span>
+<span class="nc" id="L53">            return Response.status(Response.Status.BAD_REQUEST).entity(&quot;There are no &quot; + accountType+ &quot;s&quot;).build();</span>
+        } else {
+<span class="fc" id="L55">            return Response.ok(employees).build();</span>
+        }
+    }
+
+
+    @POST //POST at http://localhost:XXXX/employees/
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createEmployee(Employee employee) {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (!employeesController.addEmployee(employee)){</span>
+<span class="nc" id="L65">            String entity =  &quot;Employee with id &quot; + employee.getEmployeeId() + &quot; already exists.&quot;;</span>
+<span class="nc" id="L66">            return Response.status(Response.Status.CONFLICT).entity(entity).build();</span>
+        } else {
+<span class="fc" id="L68">            String url = uriInfo.getAbsolutePath() + &quot;/&quot; + employee.getEmployeeId(); // url of the created student</span>
+<span class="fc" id="L69">            URI uri = URI.create(url);</span>
+<span class="fc" id="L70">            return Response.created(uri).build();</span>
+        }
+    }
+
+    @PUT //PUT at http://localhost:XXXX/employees/
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path(&quot;{id}&quot;)
+    public Response updateEmployee(Employee employee) {
+        // Idempotent method. Always update (even if the resource has already been updated before).
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (employeesController.updateEmployee(employee)) {</span>
+<span class="fc" id="L81">            return Response.noContent().build();</span>
+        } else {
+<span class="nc" id="L83">            return Response.status(Response.Status.NOT_FOUND).entity(&quot;Please provide a valid employee id.&quot;).build();</span>
+        }
+    }
+
+    @DELETE //DELETE at http://localhost:XXXX/employees/3
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Path(&quot;{id}&quot;)
+    public Response deleteEmployee(@PathParam(&quot;id&quot;) int id) {
+<span class="fc" id="L91">        employeesController.deleteEmployee(id);</span>
+        // Idempotent method. Always return the same response (even if the resource has already been deleted before).
+<span class="fc" id="L93">        return Response.noContent().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

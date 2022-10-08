@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BarsResources.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barManagementSystem</a> &gt; <a href="index.source.html" class="el_package">system.barManagement.service.resources</a> &gt; <span class="el_source">BarsResources.java</span></div><h1>BarsResources.java</h1><pre class="source lang-java linenums">package system.barManagement.service.resources;
+
+import system.barManagement.service.JWTTokenNeeded;
+import system.barManagement.service.controllers.BarsController;
+import system.barManagement.service.model.Bar;
+
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.util.List;
+
+@JWTTokenNeeded
+@Path(&quot;/bars&quot;)
+<span class="fc" id="L16">public class BarsResources {</span>
+
+    @Context
+    private UriInfo uriInfo;
+<span class="fc" id="L20">    private static final BarsController barsController = new BarsController();</span>
+
+    @GET //GET at http://localhost:XXXX/bars/
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllBars() {
+<span class="fc" id="L26">        List&lt;Bar&gt; bars = barsController.showAllBars();</span>
+<span class="fc" id="L27">        return Response.ok(bars).build();</span>
+    }
+
+    @GET //GET at http://localhost:XXXX/bars/2
+    @PermitAll
+    @Path(&quot;{id}&quot;)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBar(@PathParam(&quot;id&quot;) int id) {
+<span class="fc" id="L35">        Bar bar = barsController.showBar(id);</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (bar == null) {</span>
+<span class="nc" id="L37">            return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Please provide a valid bar id.&quot;).build();</span>
+        } else {
+<span class="fc" id="L39">            return Response.ok(bar).build();</span>
+        }
+    }
+
+    @POST //POST at http://localhost:XXXX/bars/
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createBar(Bar bar) {
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (!barsController.addBar(bar)){</span>
+<span class="nc" id="L48">            String entity =  &quot;Bar with id &quot; + bar.getBarId() + &quot; already exists.&quot;;</span>
+<span class="nc" id="L49">            return Response.status(Response.Status.CONFLICT).entity(entity).build();</span>
+        } else {
+<span class="fc" id="L51">            String url = uriInfo.getAbsolutePath() + &quot;/&quot; + bar.getBarId();</span>
+<span class="fc" id="L52">            URI uri = URI.create(url);</span>
+<span class="fc" id="L53">            return Response.created(uri).build();</span>
+        }
+    }
+
+    @DELETE //DELETE at http://localhost:XXXX/bars/2
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Path(&quot;{id}&quot;)
+    public Response deleteBar(@PathParam(&quot;id&quot;) int id) {
+<span class="fc" id="L61">        barsController.deleteBar(id);</span>
+        // Idempotent method. Always return the same response (even if the resource has already been deleted before).
+<span class="fc" id="L63">        return Response.noContent().build();</span>
+    }
+
+    @PUT //PUT at http://localhost:XXXX/bars/4
+    @RolesAllowed(&quot;BAR_MANAGER&quot;)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path(&quot;{id}&quot;)
+    public Response updateBar(Bar bar) {
+        // Idempotent method. Always update (even if the resource has already been updated before).
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (barsController.updateBar(bar)) {</span>
+<span class="fc" id="L73">            return Response.noContent().build();</span>
+        } else {
+<span class="nc" id="L75">            return Response.status(Response.Status.NOT_FOUND).entity(&quot;Please provide a valid bar id.&quot;).build();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

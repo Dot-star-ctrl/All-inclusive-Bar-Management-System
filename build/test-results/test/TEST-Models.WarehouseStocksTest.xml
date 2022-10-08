@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Models.WarehouseStocksTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-01-22T08:50:26" hostname="DESKTOP-8QUU4FI" time="0.001">
+  <properties/>
+  <testcase name="setItemIdTest()" classname="Models.WarehouseStocksTest" time="0.001"/>
+  <testcase name="setItemQuantityTest()" classname="Models.WarehouseStocksTest" time="0.0"/>
+  <testcase name="setWarehouseStockIdTest()" classname="Models.WarehouseStocksTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

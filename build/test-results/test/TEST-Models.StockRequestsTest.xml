@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Models.StockRequestsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2021-01-22T08:50:26" hostname="DESKTOP-8QUU4FI" time="0.004">
+  <properties/>
+  <testcase name="setBarIdTest()" classname="Models.StockRequestsTest" time="0.001"/>
+  <testcase name="setIsApprovedTest()" classname="Models.StockRequestsTest" time="0.001"/>
+  <testcase name="setStockRequestIdTest()" classname="Models.StockRequestsTest" time="0.0"/>
+  <testcase name="setReviewedByIdTest()" classname="Models.StockRequestsTest" time="0.0"/>
+  <testcase name="setRequestDateTest()" classname="Models.StockRequestsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
